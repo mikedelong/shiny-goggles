@@ -4,7 +4,9 @@ import spacy
 import neuralcoref
 
 # https://towardsdatascience.com/auto-generated-knowledge-graphs-92ca99a81121
+# todo try _md
 nlp = spacy.load('en_core_web_sm')  # was _lg
+
 neuralcoref.add_to_pipe(nlp)
 
 
