@@ -10,7 +10,7 @@ if __name__ == '__main__':
     df = pd.read_csv(filepath_or_buffer='./vidhya.csv', )
     # ['source', 'target', 'edge']
 
-    graph = nx.MultiDiGraph()
+    graph = nx.MultiGraph()
     for index, row in df.iterrows():
         graph.add_node(row['source'])
         graph.add_node(row['target'])
@@ -18,17 +18,18 @@ if __name__ == '__main__':
 
     positions = nx.drawing.layout.spring_layout(G=graph, )
     # now build a map of nodes to x-y coordinates so we can put the positions back in the data frame above
+    cytoscape_graph = nx.readwrite.cytoscape_data(graph)
+    cytoscape_nodes = [{'data': {'id': item['data']['id'], 'label': item['data']['name']}} for item in
+                       cytoscape_graph['elements']['nodes']]
 
     app = Dash(__name__)
     app.layout = Div([
         Cytoscape(
             id='cytoscape',
-            elements=[
-                {'data': {'id': 'one', 'label': 'Node 1'}, 'position': {'x': 50, 'y': 50}},
-                {'data': {'id': 'two', 'label': 'Node 2'}, 'position': {'x': 200, 'y': 200}},
-                {'data': {'source': 'one', 'target': 'two', 'label': 'Node 1 to 2'}}
-            ],
-            layout={'name': 'preset'}
+            elements=cytoscape_nodes + cytoscape_graph['elements']['edges'],
+            style={'width': '100%', 'height': '600px'},
+            layout={'name':  ['breadthfirst', 'circle', 'concentric', 'cose', 'grid', 'preset', 'random'][1]
+}
         )
     ])
-    app.run_server(debug=True)
+    app.run_server(debug=True,  host='localhost', port=8051, )
