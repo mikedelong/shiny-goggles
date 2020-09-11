@@ -106,6 +106,7 @@ if __name__ == '__main__':
 
     result_df = pd.DataFrame({'source': [item[0] for item in pairs],
                               'target': [item[1] for item in pairs], 'edge': relations})
+    result_df.to_csv(path_or_buf='./vidhya.csv', index=False, header=True, )
 
     if True:
         graph = nx.from_pandas_edgelist(result_df[result_df['edge'] == 'composed by'], 'source', 'target',
