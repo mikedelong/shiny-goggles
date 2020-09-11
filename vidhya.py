@@ -28,36 +28,36 @@ def get_entities(nlp, sent):
     prefix = ''
     modifier = ''
 
-    for tok in nlp(sent):
+    for token in nlp(sent):
         # if token is a punctuation mark then move on to the next token
-        if tok.dep_ != 'punct':
+        if token.dep_ != 'punct':
             # check: token is a compound word or not
-            if tok.dep_ == 'compound':
-                prefix = tok.text
+            if token.dep_ == 'compound':
+                prefix = token.text
                 # if the previous word was also a 'compound' then add the current word to it
                 if prv_tok_dep == 'compound':
-                    prefix = prv_tok_text + ' ' + tok.text
+                    prefix = prv_tok_text + ' ' + token.text
 
             # check: token is a modifier or not
-            if tok.dep_.endswith('mod'):
-                modifier = tok.text
+            if token.dep_.endswith('mod'):
+                modifier = token.text
                 # if the previous word was also a 'compound' then add the current word to it
                 if prv_tok_dep == 'compound':
-                    modifier = prv_tok_text + ' ' + tok.text
+                    modifier = prv_tok_text + ' ' + token.text
 
-            if tok.dep_.find('subj') != -1:  # == True:
-                ent1 = modifier + ' ' + prefix + ' ' + tok.text
+            if token.dep_.find('subj') != -1:  # == True:
+                ent1 = modifier + ' ' + prefix + ' ' + token.text
                 prefix = ''
                 modifier = ''
 
-            if tok.dep_.find('obj') != -1:  # == True:
-                ent2 = modifier + ' ' + prefix + ' ' + tok.text
+            if token.dep_.find('obj') != -1:  # == True:
+                ent2 = modifier + ' ' + prefix + ' ' + token.text
 
             # update variables
-            prv_tok_dep = tok.dep_
-            prv_tok_text = tok.text
+            prv_tok_dep = token.dep_
+            prv_tok_text = token.text
 
-    return [ent1.strip(), ent2.strip()]
+    return [' '.join(ent1.split()).strip(), ' '.join(ent2.split()).strip()]
 
 
 def get_relation(nlp, sent):
