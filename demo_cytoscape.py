@@ -14,8 +14,8 @@ if __name__ == '__main__':
     print(edge_dict)
 
     graph = nx.from_pandas_edgelist(create_using=nx.MultiGraph(),
-                                    df=df[df['edge'].isin({'had', 'have', 'has'})], edge_attr=True,
-                                    source='source', target='target', )
+                                    df=df[df['edge'].isin({'had', 'have', 'has', 'is', 'are', 'be', 'was', 'were'})],
+                                    edge_attr=True, source='source', target='target', )
 
     # now build a map of nodes to x-y coordinates so we can put the positions back in the data frame above
     cytoscape_graph = nx.readwrite.cytoscape_data(graph)
