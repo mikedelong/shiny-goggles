@@ -8,7 +8,6 @@ import networkx as nx
 if __name__ == '__main__':
     df = pd.read_csv(filepath_or_buffer='./vidhya.csv', )
     df = df.dropna(how='any')
-    # ['source', 'target', 'edge']
     edge_dict = df['edge'].value_counts().to_dict()
     edge_dict = {key: value for key, value in edge_dict.items() if value > 10}
     print(edge_dict)
