@@ -8,8 +8,8 @@ from pathlib import Path
 from sys import stdout
 from time import time
 
-from entity_pair import entity_pair
-from from_wiki import wiki_scrape
+import spacy
+import pandas as pd
 
 if __name__ == '__main__':
     time_start = time()
@@ -25,8 +25,17 @@ if __name__ == '__main__':
     logger = getLogger(__name__)
     logger.info('started')
 
-    wiki_data = wiki_scrape('Financial crisis of 2007–08')
+    do_spacy = False
+    if do_spacy:
+        model = spacy.load('en_core_web_sm')
 
-    pairs = entity_pair(wiki_data.loc[0, 'text'])
+        document = model("The 22-year-old recently won ATP Challenger tournament.")
+
+        for token in document:
+            logger.info('{} ... {}'.format(token.text, token.dep_))
+
+    # https://drive.google.com/file/d/1yuEUhkVFIYfMVfpA_crFGfSeJLgbPUxu/view?usp=sharing
+    df = pd.read_csv(filepath_or_buffer='./data/wiki_sentences_v2.csv')
+    logger.info(df.shape)
 
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
