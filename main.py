@@ -8,8 +8,8 @@ from pathlib import Path
 from sys import stdout
 from time import time
 
-import spacy
 import pandas as pd
+import spacy
 
 if __name__ == '__main__':
     time_start = time()
