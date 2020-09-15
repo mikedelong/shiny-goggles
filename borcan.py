@@ -1,5 +1,15 @@
 # https://medium.com/swlh/python-nlp-tutorial-information-extraction-and-knowledge-graphs-43a2a4c4556c
 
+import datetime
+from logging import FileHandler
+from logging import INFO
+from logging import StreamHandler
+from logging import basicConfig
+from logging import getLogger
+from pathlib import Path
+from sys import stdout
+from time import time
+
 from matplotlib.pyplot import axis
 from matplotlib.pyplot import figure
 from matplotlib.pyplot import show
@@ -18,8 +28,8 @@ def get_sentences(arg):
     return [sent.string.strip() for sent in document.sents]
 
 
-def print_token(token):
-    print(token.text, '->', token.dep_)
+def print_token(log, token):
+    log.info('{} > {}'.format(token.text, token.dep_))
 
 
 def is_relation_candidate(token):
@@ -30,14 +40,14 @@ def is_construction_candidate(token):
     return any(subs in token.dep_ for subs in ['compound', 'prep', 'conj', 'mod'])
 
 
-def process_subject_object_pairs(tokens):
+def process_subject_object_pairs(log, tokens):
     subject = ''
     result_object = ''
     relation = ''
     subject_construction = ''
     object_construction = ''
     for token in tokens:
-        print_token(token)
+        print_token(log, token)
         if 'punct' in token.dep_:
             continue
         if is_relation_candidate(token):
@@ -55,12 +65,12 @@ def process_subject_object_pairs(tokens):
             result_object = object_construction + ' ' + result_object
             object_construction = ''
 
-    print(subject.strip(), ',', relation.strip(), ',', result_object.strip())
+    log.info('{}, {}, {}'.format(subject.strip(), relation.strip(), result_object.strip()))
     return subject.strip(), relation.strip(), result_object.strip()
 
 
-def process_sentence(arg):
-    return process_subject_object_pairs(nlp_model(arg))
+def process_sentence(log, arg):
+    return process_subject_object_pairs(log, nlp_model(arg))
 
 
 def print_graph(arg):
@@ -81,6 +91,17 @@ def print_graph(arg):
 
 
 if __name__ == '__main__':
+    time_start = time()
+    LOG_PATH = Path('./logs/')
+    LOG_PATH.mkdir(exist_ok=True)
+    log_file = str(LOG_PATH / 'log-{}-{}.log'.format(datetime.datetime.today().strftime('%Y-%m-%d_%H-%M-%S'), 'borcan'))
+    format_ = '%(asctime)s : %(levelname)s : %(name)s : %(message)s'
+    handlers_ = [FileHandler(log_file, encoding='utf-8', ), StreamHandler(stdout)]
+    log_level_ = INFO
+    # noinspection PyArgumentList
+    basicConfig(datefmt='%m-%d-%Y %H:%M:%S', format=format_, handlers=handlers_, level=log_level_, )
+    logger = getLogger(__name__)
+    logger.info('started')
 
     text = 'London is the capital and largest city of England and the United Kingdom. Standing on the River ' \
            'Thames in the south-east of England, at the head of its 50-mile (80 km) estuary leading to ' \
@@ -98,8 +119,9 @@ if __name__ == '__main__':
     nlp_model = load('en_core_web_sm')
 
     triples = []
-    print(text)
+    logger.info(text)
     for sentence in sentences:
-        triples.append(process_sentence(sentence))
+        triples.append(process_sentence(logger, sentence))
 
     print_graph(triples)
+    logger.info('total time: {:5.2f}s'.format(time() - time_start))
