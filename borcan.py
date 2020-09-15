@@ -1,8 +1,14 @@
 # https://medium.com/swlh/python-nlp-tutorial-information-extraction-and-knowledge-graphs-43a2a4c4556c
-import spacy
+
+from matplotlib.pyplot import axis
+from matplotlib.pyplot import figure
+from matplotlib.pyplot import show
+from matplotlib.pyplot import tight_layout
+from networkx import Graph
+from networkx import draw
+from networkx import spring_layout
+from spacy import load
 from spacy.lang.en import English
-import networkx as nx
-import matplotlib.pyplot as plt
 
 
 def get_sentences(arg):
@@ -58,20 +64,20 @@ def process_sentence(arg):
 
 
 def print_graph(arg):
-    graph = nx.Graph()
+    graph = Graph()
     for triple in arg:
         for index in range(3):
             graph.add_node(triple[index])
         for index in range(2):
             graph.add_edge(triple[index], triple[index + 1])
 
-    pos = nx.spring_layout(graph)
-    plt.figure()
-    nx.draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
-            node_color='seagreen', node_size=500, pos=pos, width=1, )
-    plt.axis('off')
-    plt.tight_layout()
-    plt.show()
+    pos = spring_layout(graph)
+    figure()
+    draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
+         node_color='seagreen', node_size=500, pos=pos, width=1, )
+    axis('off')
+    tight_layout()
+    show()
 
 
 if __name__ == '__main__':
@@ -89,7 +95,7 @@ if __name__ == '__main__':
            'London is the biggest city in Britain. London has a population of 7,172,036.'
 
     sentences = get_sentences(text)
-    nlp_model = spacy.load('en_core_web_sm')
+    nlp_model = load('en_core_web_sm')
 
     triples = []
     print(text)
