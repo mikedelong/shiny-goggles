@@ -16,10 +16,6 @@ def print_token(token):
     print(token.text, '->', token.dep_)
 
 
-def append_chunk(original, chunk):
-    return original + ' ' + chunk
-
-
 def is_relation_candidate(token):
     return any(subs in token.dep_ for subs in ['ROOT', 'adj', 'attr', 'agent', 'amod'])
 
@@ -30,7 +26,7 @@ def is_construction_candidate(token):
 
 def process_subject_object_pairs(tokens):
     subject = ''
-    obj = ''
+    result_object = ''
     relation = ''
     subject_construction = ''
     object_construction = ''
@@ -39,23 +35,22 @@ def process_subject_object_pairs(tokens):
         if 'punct' in token.dep_:
             continue
         if is_relation_candidate(token):
-            relation = append_chunk(relation, token.lemma_)
+            relation = relation + ' ' + token.lemma_
         if is_construction_candidate(token):
             if subject_construction:
-                subject_construction = append_chunk(subject_construction, token.text)
+                subject_construction = subject_construction + ' ' + token.text
             if object_construction:
-                object_construction = append_chunk(object_construction, token.text)
+                object_construction = object_construction + ' ' + token.text
         if 'subj' in token.dep_:
-            subject = append_chunk(subject, token.text)
-            subject = append_chunk(subject_construction, subject)
-            subject_construction = ''
+            subject = subject + ' ' + token.text
+            subject_construction = subject_construction + ' ' + subject
         if 'obj' in token.dep_:
-            obj = append_chunk(obj, token.text)
-            obj = append_chunk(object_construction, obj)
+            result_object = result_object + ' ' + token.text
+            result_object = object_construction + ' ' + result_object
             object_construction = ''
 
-    print(subject.strip(), ',', relation.strip(), ',', obj.strip())
-    return subject.strip(), relation.strip(), obj.strip()
+    print(subject.strip(), ',', relation.strip(), ',', result_object.strip())
+    return subject.strip(), relation.strip(), result_object.strip()
 
 
 def process_sentence(arg):
@@ -65,17 +60,15 @@ def process_sentence(arg):
 def print_graph(arg):
     graph = nx.Graph()
     for triple in arg:
-        graph.add_node(triple[0])
-        graph.add_node(triple[1])
-        graph.add_node(triple[2])
-        graph.add_edge(triple[0], triple[1])
-        graph.add_edge(triple[1], triple[2])
+        for index in range(3):
+            graph.add_node(triple[index])
+        for index in range(2):
+            graph.add_edge(triple[index], triple[index + 1])
 
     pos = nx.spring_layout(graph)
     plt.figure()
-    nx.draw(graph, pos, edge_color='black', width=1, linewidths=1,
-            node_size=500, node_color='seagreen', alpha=0.9,
-            labels={node: node for node in graph.nodes()})
+    nx.draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
+            node_color='seagreen', node_size=500, pos=pos, width=1, )
     plt.axis('off')
     plt.tight_layout()
     plt.show()
