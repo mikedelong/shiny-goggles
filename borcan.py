@@ -5,10 +5,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
-def get_sentences(text):
+def get_sentences(arg):
     nlp = English()
     nlp.add_pipe(nlp.create_pipe('sentencizer'))
-    document = nlp(text)
+    document = nlp(arg)
     return [sent.string.strip() for sent in document.sents]
 
 
@@ -32,53 +32,53 @@ def is_construction_candidate(token):
 
 def process_subject_object_pairs(tokens):
     subject = ''
-    object = ''
+    obj = ''
     relation = ''
-    subjectConstruction = ''
-    objectConstruction = ''
+    subject_construction = ''
+    object_construction = ''
     for token in tokens:
         print_token(token)
-        if "punct" in token.dep_:
+        if 'punct' in token.dep_:
             continue
         if is_relation_candidate(token):
             relation = append_chunk(relation, token.lemma_)
         if is_construction_candidate(token):
-            if subjectConstruction:
-                subjectConstruction = append_chunk(subjectConstruction, token.text)
-            if objectConstruction:
-                objectConstruction = append_chunk(objectConstruction, token.text)
-        if "subj" in token.dep_:
+            if subject_construction:
+                subject_construction = append_chunk(subject_construction, token.text)
+            if object_construction:
+                object_construction = append_chunk(object_construction, token.text)
+        if 'subj' in token.dep_:
             subject = append_chunk(subject, token.text)
-            subject = append_chunk(subjectConstruction, subject)
-            subjectConstruction = ''
-        if "obj" in token.dep_:
-            object = append_chunk(object, token.text)
-            object = append_chunk(objectConstruction, object)
-            objectConstruction = ''
+            subject = append_chunk(subject_construction, subject)
+            subject_construction = ''
+        if 'obj' in token.dep_:
+            obj = append_chunk(obj, token.text)
+            obj = append_chunk(object_construction, obj)
+            object_construction = ''
 
-    print(subject.strip(), ",", relation.strip(), ",", object.strip())
-    return subject.strip(), relation.strip(), object.strip()
+    print(subject.strip(), ",", relation.strip(), ",", obj.strip())
+    return subject.strip(), relation.strip(), obj.strip()
 
 
-def process_sentence(sentence):
-    tokens = nlp_model(sentence)
+def process_sentence(arg):
+    tokens = nlp_model(arg)
     return process_subject_object_pairs(tokens)
 
 
-def print_graph(triples):
-    G = nx.Graph()
-    for triple in triples:
-        G.add_node(triple[0])
-        G.add_node(triple[1])
-        G.add_node(triple[2])
-        G.add_edge(triple[0], triple[1])
-        G.add_edge(triple[1], triple[2])
+def print_graph(arg):
+    graph = nx.Graph()
+    for triple in arg:
+        graph.add_node(triple[0])
+        graph.add_node(triple[1])
+        graph.add_node(triple[2])
+        graph.add_edge(triple[0], triple[1])
+        graph.add_edge(triple[1], triple[2])
 
-    pos = nx.spring_layout(G)
+    pos = nx.spring_layout(graph)
     plt.figure()
-    nx.draw(G, pos, edge_color='black', width=1, linewidths=1,
+    nx.draw(graph, pos, edge_color='black', width=1, linewidths=1,
             node_size=500, node_color='seagreen', alpha=0.9,
-            labels={node: node for node in G.nodes()})
+            labels={node: node for node in graph.nodes()})
     plt.axis('off')
     plt.show()
 
