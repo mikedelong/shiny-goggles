@@ -13,7 +13,7 @@ def get_sentences(arg):
 
 
 def print_token(token):
-    print(token.text, "->", token.dep_)
+    print(token.text, '->', token.dep_)
 
 
 def append_chunk(original, chunk):
@@ -21,13 +21,11 @@ def append_chunk(original, chunk):
 
 
 def is_relation_candidate(token):
-    deps = ["ROOT", "adj", "attr", "agent", "amod"]
-    return any(subs in token.dep_ for subs in deps)
+    return any(subs in token.dep_ for subs in ['ROOT', 'adj', 'attr', 'agent', 'amod'])
 
 
 def is_construction_candidate(token):
-    deps = ["compound", "prep", "conj", "mod"]
-    return any(subs in token.dep_ for subs in deps)
+    return any(subs in token.dep_ for subs in ['compound', 'prep', 'conj', 'mod'])
 
 
 def process_subject_object_pairs(tokens):
@@ -56,13 +54,12 @@ def process_subject_object_pairs(tokens):
             obj = append_chunk(object_construction, obj)
             object_construction = ''
 
-    print(subject.strip(), ",", relation.strip(), ",", obj.strip())
+    print(subject.strip(), ',', relation.strip(), ',', obj.strip())
     return subject.strip(), relation.strip(), obj.strip()
 
 
 def process_sentence(arg):
-    tokens = nlp_model(arg)
-    return process_subject_object_pairs(tokens)
+    return process_subject_object_pairs(nlp_model(arg))
 
 
 def print_graph(arg):
@@ -80,22 +77,23 @@ def print_graph(arg):
             node_size=500, node_color='seagreen', alpha=0.9,
             labels={node: node for node in graph.nodes()})
     plt.axis('off')
+    plt.tight_layout()
     plt.show()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
-    text = "London is the capital and largest city of England and the United Kingdom. Standing on the River " \
-           "Thames in the south-east of England, at the head of its 50-mile (80 km) estuary leading to " \
-           "the North Sea, London has been a major settlement for two millennia. " \
-           "Londinium was founded by the Romans. The City of London, " \
-           "London's ancient core − an area of just 1.12 square miles (2.9 km2) and colloquially known as " \
-           "the Square Mile − retains boundaries that follow closely its medieval limits." \
-           "The City of Westminster is also an Inner London borough holding city status. " \
-           "Greater London is governed by the Mayor of London and the London Assembly." \
-           "London is located in the southeast of England." \
-           "Westminster is located in London." \
-           "London is the biggest city in Britain. London has a population of 7,172,036."
+    text = 'London is the capital and largest city of England and the United Kingdom. Standing on the River ' \
+           'Thames in the south-east of England, at the head of its 50-mile (80 km) estuary leading to ' \
+           'the North Sea, London has been a major settlement for two millennia. ' \
+           'Londinium was founded by the Romans. The City of London, ' \
+           'London\'s ancient core − an area of just 1.12 square miles (2.9 km2) and colloquially known as ' \
+           'the Square Mile − retains boundaries that follow closely its medieval limits.' \
+           'The City of Westminster is also an Inner London borough holding city status. ' \
+           'Greater London is governed by the Mayor of London and the London Assembly.' \
+           'London is located in the southeast of England.' \
+           'Westminster is located in London.' \
+           'London is the biggest city in Britain. London has a population of 7,172,036.'
 
     sentences = get_sentences(text)
     nlp_model = spacy.load('en_core_web_sm')
