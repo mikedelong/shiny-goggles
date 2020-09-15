@@ -21,13 +21,6 @@ from spacy import load
 from spacy.lang.en import English
 
 
-def get_sentences(arg):
-    nlp = English()
-    nlp.add_pipe(nlp.create_pipe('sentencizer'))
-    document = nlp(arg)
-    return [sent.string.strip() for sent in document.sents]
-
-
 def print_token(log, token):
     log.info('{} > {}'.format(token.text, token.dep_))
 
@@ -70,7 +63,7 @@ def process_subject_object_pairs(log, tokens):
 
 
 def process_sentence(log, arg):
-    return process_subject_object_pairs(log, nlp_model(arg))
+    return process_subject_object_pairs(log, model(arg))
 
 
 def print_graph(arg):
@@ -115,12 +108,16 @@ if __name__ == '__main__':
            'Westminster is located in London.' \
            'London is the biggest city in Britain. London has a population of 7,172,036.'
 
-    sentences = get_sentences(text)
-    nlp_model = load('en_core_web_sm')
+    nlp = English()
+    nlp.add_pipe(nlp.create_pipe('sentencizer'))
+    document = nlp(text=text)
+    sentences = [sentence.string.strip() for sentence in document.sents]
+
+    model = load('en_core_web_sm')
 
     triples = []
-    logger.info(text)
     for sentence in sentences:
+        logger.info(sentence)
         triples.append(process_sentence(logger, sentence))
 
     print_graph(triples)
