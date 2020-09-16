@@ -74,10 +74,10 @@ def print_graph(arg):
         for index in range(2):
             graph.add_edge(triple[index], triple[index + 1])
 
-    pos = spring_layout(graph)
+    position = spring_layout(graph)
     figure()
     draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
-         node_color='seagreen', node_size=500, pos=pos, width=1, )
+         node_color='seagreen', node_size=500, pos=position, width=1, )
     axis('off')
     tight_layout()
     show()
