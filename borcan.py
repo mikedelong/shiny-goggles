@@ -21,10 +21,6 @@ from spacy import load
 from spacy.lang.en import English
 
 
-def is_construction_candidate(token):
-    return any(subs in token.dep_ for subs in ['compound', 'prep', 'conj', 'mod'])
-
-
 def process_subject_object_pairs(log, tokens):
     subject = ''
     result_object = ''
@@ -37,7 +33,7 @@ def process_subject_object_pairs(log, tokens):
             continue
         if any(subs in token.dep_ for subs in ['ROOT', 'adj', 'attr', 'agent', 'amod']):
             relation = relation + ' ' + token.lemma_
-        if is_construction_candidate(token):
+        if any(subs in token.dep_ for subs in ['compound', 'prep', 'conj', 'mod']):
             if subject_construction:
                 subject_construction = subject_construction + ' ' + token.text
             if object_construction:
