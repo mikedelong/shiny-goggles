@@ -21,10 +21,6 @@ from spacy import load
 from spacy.lang.en import English
 
 
-def is_relation_candidate(token):
-    return any(subs in token.dep_ for subs in ['ROOT', 'adj', 'attr', 'agent', 'amod'])
-
-
 def is_construction_candidate(token):
     return any(subs in token.dep_ for subs in ['compound', 'prep', 'conj', 'mod'])
 
@@ -39,7 +35,7 @@ def process_subject_object_pairs(log, tokens):
         log.info('{} > {}'.format(token.text, token.dep_))
         if 'punct' in token.dep_:
             continue
-        if is_relation_candidate(token):
+        if any(subs in token.dep_ for subs in ['ROOT', 'adj', 'attr', 'agent', 'amod']):
             relation = relation + ' ' + token.lemma_
         if is_construction_candidate(token):
             if subject_construction:
