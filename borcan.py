@@ -62,10 +62,6 @@ def process_subject_object_pairs(log, tokens):
     return subject.strip(), relation.strip(), result_object.strip()
 
 
-def process_sentence(log, arg):
-    return process_subject_object_pairs(log, model(arg))
-
-
 def print_graph(arg):
     graph = Graph()
     for triple in arg:
@@ -118,7 +114,7 @@ if __name__ == '__main__':
     triples = []
     for sentence in sentences:
         logger.info(sentence)
-        triples.append(process_sentence(logger, sentence))
+        triples.append(process_subject_object_pairs(logger, model(sentence)))
 
     print_graph(triples)
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
