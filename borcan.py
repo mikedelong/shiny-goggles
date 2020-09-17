@@ -20,6 +20,11 @@ from networkx import spring_layout
 from spacy import load
 from spacy.lang.en import English
 
+from dash import Dash
+from dash_cytoscape import Cytoscape
+from dash_html_components import Div
+
+
 
 def process_subject_object_pairs(log, tokens):
     subject = ''
@@ -59,12 +64,16 @@ def print_graph(arg):
             graph.add_edge(triple[index], triple[index + 1])
 
     position = spring_layout(graph)
-    figure()
-    draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
-         node_color='seagreen', node_size=500, pos=position, width=1, )
-    axis('off')
-    tight_layout()
-    show()
+    use_networkx = True
+    if use_networkx:
+        figure()
+        draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
+             node_color='seagreen', node_size=500, pos=position, width=1, )
+        axis('off')
+        tight_layout()
+        show()
+    else:
+        pass
 
 
 if __name__ == '__main__':
