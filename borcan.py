@@ -10,6 +10,9 @@ from pathlib import Path
 from sys import stdout
 from time import time
 
+from dash import Dash
+from dash_cytoscape import Cytoscape
+from dash_html_components import Div
 from matplotlib.pyplot import axis
 from matplotlib.pyplot import figure
 from matplotlib.pyplot import show
@@ -17,13 +20,9 @@ from matplotlib.pyplot import tight_layout
 from networkx import Graph
 from networkx import draw
 from networkx import spring_layout
+from networkx.readwrite import cytoscape_data
 from spacy import load
 from spacy.lang.en import English
-
-from dash import Dash
-from dash_cytoscape import Cytoscape
-from dash_html_components import Div
-from networkx.readwrite import cytoscape_data
 
 
 def process_subject_object_pairs(log, tokens):
