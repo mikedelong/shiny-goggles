@@ -23,7 +23,7 @@ from spacy.lang.en import English
 from dash import Dash
 from dash_cytoscape import Cytoscape
 from dash_html_components import Div
-
+from networkx.readwrite import cytoscape_data
 
 
 def process_subject_object_pairs(log, tokens):
@@ -64,7 +64,7 @@ def print_graph(arg):
             graph.add_edge(triple[index], triple[index + 1])
 
     position = spring_layout(graph)
-    use_networkx = True
+    use_networkx = False
     if use_networkx:
         figure()
         draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
@@ -73,7 +73,20 @@ def print_graph(arg):
         tight_layout()
         show()
     else:
-        pass
+        cytoscape_graph = cytoscape_data(graph)
+        cytoscape_nodes = [{'data': {'id': item['data']['id'], 'label': item['data']['name']}} for item in
+                           cytoscape_graph['elements']['nodes']]
+
+        app = Dash(__name__)
+        app.layout = Div([
+            Cytoscape(
+                id='cytoscape',
+                elements=cytoscape_nodes + cytoscape_graph['elements']['edges'],
+                style={'width': '100%', 'height': '600px'},
+                layout={'name': ['breadthfirst', 'circle', 'concentric', 'cose', 'grid', 'preset', 'random'][3]}
+            )
+        ])
+        app.run_server(debug=True, host='localhost', port=8052, )
 
 
 if __name__ == '__main__':
