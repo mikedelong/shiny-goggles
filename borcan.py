@@ -21,8 +21,10 @@ from networkx import Graph
 from networkx import draw
 from networkx import spring_layout
 from networkx.readwrite import cytoscape_data
-from spacy import load
+from spacy import load as load_spacy
 from spacy.lang.en import English
+from json import load as load_json
+from pprint import pformat
 
 
 def process_subject_object_pairs(log, tokens):
@@ -101,9 +103,12 @@ if __name__ == '__main__':
     logger = getLogger(__name__)
     logger.info('started')
 
-    # todo get these from settings
-    input_file = './london.txt'
-    input_encoding = 'ascii'
+    with open(encoding='ascii', file='./borcan_settings.json', mode='r',) as settings_fp:
+        settings = load_json(fp=settings_fp)
+    logger.info('settings: {}'.format(pformat(settings)))
+    input_file = settings['text']
+    input_encoding = settings['text_encoding']
+
     with open(encoding=input_encoding, file=input_file, mode='r',) as input_fp:
         text = input_fp.readlines()
     text = ' '.join([item.strip() for item in text])
@@ -113,7 +118,7 @@ if __name__ == '__main__':
     document = nlp(text=text)
     sentences = [sentence.string.strip() for sentence in document.sents]
 
-    model = load('en_core_web_sm')
+    model = load_spacy('en_core_web_sm')
 
     triples = []
     for sentence in sentences:
