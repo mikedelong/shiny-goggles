@@ -102,7 +102,9 @@ if __name__ == '__main__':
     logger = getLogger(__name__)
     logger.info('started')
 
-    with open(encoding='ascii', file='london.txt', ) as input_fp:
+    input_file = './london.txt'
+    input_encoding = 'ascii'
+    with open(encoding=input_encoding, file=input_file, mode='r',) as input_fp:
         text = input_fp.readlines()
     text = ' '.join([item.strip() for item in text])
 
