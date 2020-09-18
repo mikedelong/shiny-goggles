@@ -23,7 +23,6 @@ from networkx import spring_layout
 from networkx.readwrite import cytoscape_data
 from spacy import load
 from spacy.lang.en import English
-from nltk import sent_tokenize
 
 
 def process_subject_object_pairs(log, tokens):
