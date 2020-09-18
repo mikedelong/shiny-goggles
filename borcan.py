@@ -102,6 +102,7 @@ if __name__ == '__main__':
     logger = getLogger(__name__)
     logger.info('started')
 
+    # todo get these from settings
     input_file = './london.txt'
     input_encoding = 'ascii'
     with open(encoding=input_encoding, file=input_file, mode='r',) as input_fp:
