@@ -1,12 +1,14 @@
 # https://medium.com/swlh/python-nlp-tutorial-information-extraction-and-knowledge-graphs-43a2a4c4556c
 
 import datetime
+from json import load as load_json
 from logging import FileHandler
 from logging import INFO
 from logging import StreamHandler
 from logging import basicConfig
 from logging import getLogger
 from pathlib import Path
+from pprint import pformat
 from sys import stdout
 from time import time
 
@@ -23,8 +25,6 @@ from networkx import spring_layout
 from networkx.readwrite import cytoscape_data
 from spacy import load as load_spacy
 from spacy.lang.en import English
-from json import load as load_json
-from pprint import pformat
 
 
 def process_subject_object_pairs(log, tokens):
