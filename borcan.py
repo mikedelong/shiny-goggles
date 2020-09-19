@@ -108,13 +108,14 @@ if __name__ == '__main__':
     logger.info('settings: {}'.format(pformat(settings)))
     input_file = settings['text']
     input_encoding = settings['text_encoding']
+    pipline_name = settings['pipeline']
 
     with open(encoding=input_encoding, file=input_file, mode='r',) as input_fp:
         text = input_fp.readlines()
     text = ' '.join([item.strip() for item in text])
 
     nlp = English()
-    nlp.add_pipe(nlp.create_pipe('sentencizer'))
+    nlp.add_pipe(nlp.create_pipe(pipline_name))
     document = nlp(text=text)
     sentences = [sentence.string.strip() for sentence in document.sents]
 
