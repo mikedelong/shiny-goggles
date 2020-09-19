@@ -1,4 +1,6 @@
 {
+  "pipeline": "sentencizer",
+  "spacy_model": "en_core_web_sm",
   "text": "london.txt",
   "text_encoding": "ascii"
 }
