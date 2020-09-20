@@ -1,4 +1,5 @@
 {
+  "graph_package": "cytoscape",
   "pipeline": "sentencizer",
   "spacy_model": "en_core_web_sm",
   "text": "london.txt",
