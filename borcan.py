@@ -56,7 +56,7 @@ def process_subject_object_pairs(log, tokens):
     return subject.strip(), relation.strip(), result_object.strip()
 
 
-def print_graph(arg):
+def print_graph(arg, graph_package, ):
     graph = Graph()
     for triple in arg:
         for index in range(3):
@@ -65,15 +65,14 @@ def print_graph(arg):
             graph.add_edge(triple[index], triple[index + 1])
 
     position = spring_layout(graph)
-    use_networkx = False
-    if use_networkx:
+    if graph_package == 'networkx':
         figure()
         draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
              node_color='seagreen', node_size=500, pos=position, width=1, )
         axis('off')
         tight_layout()
         show()
-    else:
+    elif graph_technology == 'cytoscape':
         cytoscape_graph = cytoscape_data(graph)
         cytoscape_nodes = [{'data': {'id': item['data']['id'], 'label': item['data']['name']}} for item in
                            cytoscape_graph['elements']['nodes']]
@@ -88,6 +87,8 @@ def print_graph(arg):
             )
         ])
         app.run_server(debug=True, host='localhost', port=8052, )
+    else:
+        raise NotImplemented('not supported: {}'.format(graph_technology))
 
 
 if __name__ == '__main__':
@@ -103,15 +104,17 @@ if __name__ == '__main__':
     logger = getLogger(__name__)
     logger.info('started')
 
-    with open(encoding='ascii', file='./borcan_settings.json', mode='r',) as settings_fp:
+    with open(encoding='ascii', file='./borcan_settings.json', mode='r', ) as settings_fp:
         settings = load_json(fp=settings_fp)
     logger.info('settings: {}'.format(pformat(settings)))
     input_file = settings['text']
     input_encoding = settings['text_encoding']
     pipeline_name = settings['pipeline']
     spacy_model = settings['spacy_model']
+    graph_technologies = ['cytoscape', 'networkx', ]
+    graph_technology = graph_technologies[0]
 
-    with open(encoding=input_encoding, file=input_file, mode='r',) as input_fp:
+    with open(encoding=input_encoding, file=input_file, mode='r', ) as input_fp:
         text = input_fp.readlines()
     text = ' '.join([item.strip() for item in text])
 
@@ -127,5 +130,5 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
-    print_graph(triples)
+    print_graph(arg=triples, graph_package=graph_technology,)
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
