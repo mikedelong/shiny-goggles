@@ -109,6 +109,7 @@ if __name__ == '__main__':
     input_file = settings['text']
     input_encoding = settings['text_encoding']
     pipeline_name = settings['pipeline']
+    spacy_model = settings['spacy_model']
 
     with open(encoding=input_encoding, file=input_file, mode='r',) as input_fp:
         text = input_fp.readlines()
@@ -119,7 +120,7 @@ if __name__ == '__main__':
     document = nlp(text=text)
     sentences = [sentence.string.strip() for sentence in document.sents]
 
-    model = load_spacy('en_core_web_sm')
+    model = load_spacy(spacy_model)
 
     triples = []
     for sentence in sentences:
