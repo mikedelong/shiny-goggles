@@ -1,5 +1,7 @@
 {
   "graph_package": "cytoscape",
+  "layout": 2,
+  "layouts": ["breadthfirst", "circle", "concentric", "cose", "grid", "preset", "random"],
   "pipeline": "sentencizer",
   "spacy_model": "en_core_web_sm",
   "text": "bats.txt",
