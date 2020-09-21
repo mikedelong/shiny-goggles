@@ -56,7 +56,7 @@ def process_subject_object_pairs(log, tokens):
     return subject.strip(), relation.strip(), result_object.strip()
 
 
-def print_graph(arg, graph_package, ):
+def print_graph(arg, graph_package, cytoscape_layout, ):
     graph = Graph()
     for triple in arg:
         for index in range(3):
@@ -82,8 +82,8 @@ def print_graph(arg, graph_package, ):
             Cytoscape(
                 id='cytoscape',
                 elements=cytoscape_nodes + cytoscape_graph['elements']['edges'],
-                style={'width': '100%', 'height': '600px'},
-                layout={'name': ['breadthfirst', 'circle', 'concentric', 'cose', 'grid', 'preset', 'random'][3]}
+                style={'width': '100%', 'height': '700px'},
+                layout={'name': cytoscape_layout}
             )
         ])
         app.run_server(debug=True, host='localhost', port=8052, )
@@ -113,6 +113,9 @@ if __name__ == '__main__':
     spacy_model = settings['spacy_model']
     graph_technologies = ['cytoscape', 'networkx', ]
     graph_technology = graph_technologies[0]
+    layouts = settings['layouts']
+    layout_selection = settings['layout']
+    layout = layouts[layout_selection]
 
     with open(encoding=input_encoding, file=input_file, mode='r', ) as input_fp:
         text = input_fp.readlines()
@@ -130,5 +133,5 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
-    print_graph(arg=triples, graph_package=graph_technology,)
+    print_graph(arg=triples, graph_package=graph_technology, cytoscape_layout=layout, )
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
