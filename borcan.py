@@ -56,7 +56,7 @@ def process_subject_object_pairs(log, tokens):
     return subject.strip(), relation.strip(), result_object.strip()
 
 
-def show_graph(arg, graph_package, cytoscape_layout, cytoscape_host, ):
+def show_graph(arg, graph_package, cytoscape_layout, cytoscape_host, cytoscape_port, ):
     graph = Graph()
     for triple in arg:
         for index in range(3):
@@ -86,7 +86,7 @@ def show_graph(arg, graph_package, cytoscape_layout, cytoscape_host, ):
                 layout={'name': cytoscape_layout}
             )
         ])
-        app.run_server(debug=True, host=cytoscape_host, port=8052, )
+        app.run_server(debug=True, host=cytoscape_host, port=cytoscape_port, )
     else:
         raise NotImplemented('not supported: {}'.format(graph_technology))
 
@@ -133,5 +133,6 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
-    show_graph(arg=triples, graph_package=graph_technology, cytoscape_layout=layout, cytoscape_host='localhost', )
+    show_graph(arg=triples, graph_package=graph_technology, cytoscape_layout=layout, cytoscape_host='localhost',
+               cytoscape_port=8052, )
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
