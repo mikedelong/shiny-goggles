@@ -56,7 +56,7 @@ def process_subject_object_pairs(log, tokens):
     return subject.strip(), relation.strip(), result_object.strip()
 
 
-def print_graph(arg, graph_package, cytoscape_layout, ):
+def show_graph(arg, graph_package, cytoscape_layout, ):
     graph = Graph()
     for triple in arg:
         for index in range(3):
@@ -133,5 +133,5 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
-    print_graph(arg=triples, graph_package=graph_technology, cytoscape_layout=layout, )
+    show_graph(arg=triples, graph_package=graph_technology, cytoscape_layout=layout, )
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
