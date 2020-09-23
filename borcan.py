@@ -59,10 +59,12 @@ def process_subject_object_pairs(log, tokens):
 def show_graph(arg, graph_package, cytoscape_layout, cytoscape_host, cytoscape_port, ):
     graph = Graph()
     for triple in arg:
-        for index in range(3):
-            graph.add_node(triple[index])
-        for index in range(2):
-            graph.add_edge(triple[index], triple[index + 1])
+        # todo unhack this
+        if all([len(triple[index]) > 0 for index in range(3)]):
+            for index in range(3):
+                graph.add_node(triple[index])
+            for index in range(2):
+                graph.add_edge(triple[index], triple[index + 1])
 
     position = spring_layout(graph)
     if graph_package == 'networkx':
@@ -107,9 +109,11 @@ if __name__ == '__main__':
     with open(encoding='ascii', file='./borcan_settings.json', mode='r', ) as settings_fp:
         settings = load_json(fp=settings_fp)
     logger.info('settings: {}'.format(pformat(settings)))
+    host = settings['host']
     input_file = settings['text']
     input_encoding = settings['text_encoding']
     pipeline_name = settings['pipeline']
+    port = settings['port']
     spacy_model = settings['spacy_model']
     graph_technologies = ['cytoscape', 'networkx', ]
     graph_technology = graph_technologies[0]
@@ -133,6 +137,6 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
-    show_graph(arg=triples, graph_package=graph_technology, cytoscape_layout=layout, cytoscape_host='localhost',
-               cytoscape_port=8052, )
+    show_graph(arg=triples, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
+               graph_package=graph_technology, )
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
