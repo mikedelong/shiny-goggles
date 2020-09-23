@@ -12,6 +12,6 @@
   ],
   "pipeline": "sentencizer",
   "spacy_model": "en_core_web_sm",
-  "text": "bats.txt",
-  "text_encoding": "ascii"
+  "text": "constitution.txt",
+  "text_encoding": "utf-8"
 }
