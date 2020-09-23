@@ -1,5 +1,6 @@
 {
   "graph_package": "cytoscape",
+  "host": "localhost",
   "layout": 2,
   "layouts": [
     "breadthfirst",
@@ -11,6 +12,7 @@
     "random"
   ],
   "pipeline": "sentencizer",
+  "port": 8054,
   "spacy_model": "en_core_web_sm",
   "text": "constitution.txt",
   "text_encoding": "utf-8"
