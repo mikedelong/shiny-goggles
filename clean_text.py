@@ -15,7 +15,7 @@ from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 def remove_citation(arg):
     for index, index_item in enumerate(arg[:-2]):
-        if all([index_item == '[', arg[index + 1].isnumeric(), arg[index + 2] == ']']):
+        if all([index_item == '[', arg[index + 1].strip().isnumeric(), arg[index + 2] == ']']):
             result = arg[:index] + arg[index + 3:]
             return result if result is not None else list()
     return arg
@@ -48,6 +48,7 @@ if __name__ == '__main__':
     logger.info(len(sentences))
     sentences = [item for item in sentences if item is not None]
     for sentence in sentences:
+        sentence = sentence.replace('—', '-')
         words = word_tokenize(sentence)
         length = len(words)
         original_length = length
