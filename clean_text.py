@@ -7,6 +7,7 @@ from logging import getLogger
 from pathlib import Path
 from sys import stdout
 from time import time
+
 from nltk import sent_tokenize
 from nltk import word_tokenize
 from nltk.tokenize.treebank import TreebankWordDetokenizer
