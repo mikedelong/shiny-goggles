@@ -37,9 +37,9 @@ if __name__ == '__main__':
 
     detokenizer = TreebankWordDetokenizer()
 
-    encoding = 'utf-8'
+    input_encoding = 'utf-8'
     input_file = './constitution.txt'
-    with open(encoding=encoding, file=input_file, mode='r') as input_fp:
+    with open(encoding=input_encoding, file=input_file, mode='r') as input_fp:
         text = input_fp.read()
 
     text = text.replace('\n', ' ')
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     logger.info(len(sentences))
     sentences = [item for item in sentences if item is not None]
     for sentence in sentences:
-        sentence = sentence.replace('—', '-')
+        sentence = sentence.replace('—', ' - ').replace('–', ' - ').replace('"', ' ')
         words = word_tokenize(sentence)
         length = len(words)
         original_length = length
@@ -61,8 +61,8 @@ if __name__ == '__main__':
         if length < original_length:
             sentence = detokenizer.detokenize(updated)
         clean.append(sentence)
-
-    with open(encoding=encoding, file='./clean_constitution.txt', mode='w',) as out_fp:
+    output_encoding = 'ascii'
+    with open(encoding=output_encoding, file='./clean_constitution.txt', mode='w',) as out_fp:
         for item in clean:
             out_fp.write('{}\n'.format(item))
 
