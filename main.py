@@ -1,4 +1,4 @@
-from datetime import date
+import datetime
 from logging import FileHandler
 from logging import INFO
 from logging import StreamHandler
@@ -8,14 +8,14 @@ from pathlib import Path
 from sys import stdout
 from time import time
 
-import pandas as pd
-import spacy
+from pandas import read_csv
+from spacy import load
 
 if __name__ == '__main__':
     time_start = time()
     LOG_PATH = Path('./logs/')
     LOG_PATH.mkdir(exist_ok=True)
-    run_start_time = date.today().strftime('%Y-%m-%d_%H-%M-%S')
+    run_start_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     log_file = str(LOG_PATH / 'log-{}-{}.log'.format(run_start_time, 'main'))
     format_ = '%(asctime)s : %(levelname)s : %(name)s : %(message)s'
     handlers_ = [FileHandler(log_file, encoding='utf-8', ), StreamHandler(stdout)]
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     do_spacy = False
     if do_spacy:
-        model = spacy.load('en_core_web_sm')
+        model = load('en_core_web_sm')
 
         document = model("The 22-year-old recently won ATP Challenger tournament.")
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
             logger.info('{} ... {}'.format(token.text, token.dep_))
 
     # https://drive.google.com/file/d/1yuEUhkVFIYfMVfpA_crFGfSeJLgbPUxu/view?usp=sharing
-    df = pd.read_csv(filepath_or_buffer='./data/wiki_sentences_v2.csv')
+    df = read_csv(filepath_or_buffer='./data/wiki_sentences_v2.csv')
     logger.info(df.shape)
 
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
