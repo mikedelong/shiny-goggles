@@ -1,7 +1,7 @@
 {
   "graph_package": "cytoscape",
   "host": "localhost",
-  "layout": 2,
+  "layout": 3,
   "layouts": [
     "breadthfirst",
     "circle",
