@@ -142,6 +142,8 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
+    # todo: filter the graph and only show weight > 1
+
     show_graph(arg=triples, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
