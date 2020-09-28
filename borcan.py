@@ -22,6 +22,7 @@ from matplotlib.pyplot import tight_layout
 from networkx import Graph
 from networkx import draw
 from networkx import spring_layout
+from networkx import connected_component_subgraphs
 from networkx.readwrite import cytoscape_data
 from spacy import load as load_spacy
 from spacy.lang.en import English
@@ -64,7 +65,11 @@ def show_graph(arg, graph_package, cytoscape_layout, cytoscape_host, cytoscape_p
             for index in range(3):
                 graph.add_node(triple[index])
             for index in range(2):
-                graph.add_edge(triple[index], triple[index + 1])
+                if (triple[index], triple[index + 1]) in graph.edges:
+                    graph[triple[index]][triple[index + 1]]['weight'] = graph[triple[index]][triple[index+1]][
+                                                                            'weight'] + 1
+                else:
+                    graph.add_edge(triple[index], triple[index + 1], weight=1)
 
     position = spring_layout(graph)
     if graph_package == 'networkx':
