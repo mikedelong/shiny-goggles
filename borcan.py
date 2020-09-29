@@ -27,6 +27,22 @@ from spacy import load as load_spacy
 from spacy.lang.en import English
 
 
+def make_graph(arg):
+    result = Graph()
+    for triple in arg:
+        # todo unhack this
+        if all([len(triple[index]) > 0 for index in range(3)]):
+            for index in range(3):
+                result.add_node(triple[index])
+            for index in range(2):
+                if (triple[index], triple[index + 1]) in result.edges:
+                    result[triple[index]][triple[index + 1]]['weight'] = result[triple[index]][triple[index + 1]][
+                                                                             'weight'] + 1
+                else:
+                    result.add_edge(triple[index], triple[index + 1], weight=1)
+    return result
+
+
 def process_subject_object_pairs(log, tokens):
     subject = ''
     result_object = ''
@@ -54,22 +70,6 @@ def process_subject_object_pairs(log, tokens):
 
     log.info('{}, {}, {}'.format(subject.strip(), relation.strip(), result_object.strip()))
     return subject.strip(), relation.strip(), result_object.strip()
-
-
-def make_graph(arg):
-    result = Graph()
-    for triple in arg:
-        # todo unhack this
-        if all([len(triple[index]) > 0 for index in range(3)]):
-            for index in range(3):
-                result.add_node(triple[index])
-            for index in range(2):
-                if (triple[index], triple[index + 1]) in result.edges:
-                    result[triple[index]][triple[index + 1]]['weight'] = result[triple[index]][triple[index + 1]][
-                                                                            'weight'] + 1
-                else:
-                    result.add_edge(triple[index], triple[index + 1], weight=1)
-    return result
 
 
 def show_graph(arg_graph, graph_package, cytoscape_layout, cytoscape_host, cytoscape_port, ):
