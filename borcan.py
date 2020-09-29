@@ -22,7 +22,6 @@ from matplotlib.pyplot import tight_layout
 from networkx import Graph
 from networkx import draw
 from networkx import spring_layout
-from networkx import connected_component_subgraphs
 from networkx.readwrite import cytoscape_data
 from spacy import load as load_spacy
 from spacy.lang.en import English
@@ -57,7 +56,7 @@ def process_subject_object_pairs(log, tokens):
     return subject.strip(), relation.strip(), result_object.strip()
 
 
-def show_graph(arg, graph_package, cytoscape_layout, cytoscape_host, cytoscape_port, ):
+def make_graph(arg):
     graph = Graph()
     for triple in arg:
         # todo unhack this
@@ -66,21 +65,24 @@ def show_graph(arg, graph_package, cytoscape_layout, cytoscape_host, cytoscape_p
                 graph.add_node(triple[index])
             for index in range(2):
                 if (triple[index], triple[index + 1]) in graph.edges:
-                    graph[triple[index]][triple[index + 1]]['weight'] = graph[triple[index]][triple[index+1]][
+                    graph[triple[index]][triple[index + 1]]['weight'] = graph[triple[index]][triple[index + 1]][
                                                                             'weight'] + 1
                 else:
                     graph.add_edge(triple[index], triple[index + 1], weight=1)
+    return graph
 
-    position = spring_layout(graph)
+
+def show_graph(arg_graph, graph_package, cytoscape_layout, cytoscape_host, cytoscape_port, ):
+    position = spring_layout(arg_graph)
     if graph_package == 'networkx':
         figure()
-        draw(alpha=0.9, edge_color='black', G=graph, labels={node: node for node in graph.nodes()}, linewidths=1,
-             node_color='seagreen', node_size=500, pos=position, width=1, )
+        draw(alpha=0.9, edge_color='black', G=arg_graph, labels={node: node for node in arg_graph.nodes()},
+             linewidths=1,node_color='seagreen', node_size=500, pos=position, width=1, )
         axis('off')
         tight_layout()
         show()
     elif graph_technology == 'cytoscape':
-        cytoscape_graph = cytoscape_data(graph)
+        cytoscape_graph = cytoscape_data(arg_graph)
         cytoscape_nodes = [{'data': {'id': item['data']['id'], 'label': item['data']['name']}} for item in
                            cytoscape_graph['elements']['nodes']]
 
@@ -144,6 +146,8 @@ if __name__ == '__main__':
 
     # todo: filter the graph and only show weight > 1
 
-    show_graph(arg=triples, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
+    graph = make_graph(triples)
+
+    show_graph(arg_graph=graph, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
