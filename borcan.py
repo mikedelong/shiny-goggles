@@ -72,6 +72,10 @@ def process_subject_object_pairs(log, tokens):
     return subject.strip(), relation.strip(), result_object.strip()
 
 
+def reduce(arg_graph):
+    return arg_graph
+
+
 def show_graph(arg_graph, graph_package, cytoscape_layout, cytoscape_host, cytoscape_port, ):
     position = spring_layout(arg_graph)
     if graph_package == 'networkx':
