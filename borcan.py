@@ -57,19 +57,19 @@ def process_subject_object_pairs(log, tokens):
 
 
 def make_graph(arg):
-    graph = Graph()
+    result = Graph()
     for triple in arg:
         # todo unhack this
         if all([len(triple[index]) > 0 for index in range(3)]):
             for index in range(3):
-                graph.add_node(triple[index])
+                result.add_node(triple[index])
             for index in range(2):
-                if (triple[index], triple[index + 1]) in graph.edges:
-                    graph[triple[index]][triple[index + 1]]['weight'] = graph[triple[index]][triple[index + 1]][
+                if (triple[index], triple[index + 1]) in result.edges:
+                    result[triple[index]][triple[index + 1]]['weight'] = result[triple[index]][triple[index + 1]][
                                                                             'weight'] + 1
                 else:
-                    graph.add_edge(triple[index], triple[index + 1], weight=1)
-    return graph
+                    result.add_edge(triple[index], triple[index + 1], weight=1)
+    return result
 
 
 def show_graph(arg_graph, graph_package, cytoscape_layout, cytoscape_host, cytoscape_port, ):
@@ -77,7 +77,7 @@ def show_graph(arg_graph, graph_package, cytoscape_layout, cytoscape_host, cytos
     if graph_package == 'networkx':
         figure()
         draw(alpha=0.9, edge_color='black', G=arg_graph, labels={node: node for node in arg_graph.nodes()},
-             linewidths=1,node_color='seagreen', node_size=500, pos=position, width=1, )
+             linewidths=1, node_color='seagreen', node_size=500, pos=position, width=1, )
         axis('off')
         tight_layout()
         show()
