@@ -1,5 +1,4 @@
-# https://medium.com/swlh/python-nlp-tutorial-information-extraction-and-knowledge-graphs-43a2a4c4556c
-
+# https://stackoverflow.com/questions/61917404/scatter-plot-for-scipy-sparse-csr-csr-matrix
 import datetime
 from logging import FileHandler
 from logging import INFO
