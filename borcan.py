@@ -160,6 +160,6 @@ if __name__ == '__main__':
     graph = make_graph(triples)
     reduced = reduce(arg_graph=graph, threshold=1, )
 
-    show_graph(arg_graph=graph, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
+    show_graph(arg_graph=reduced, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
