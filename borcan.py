@@ -72,7 +72,9 @@ def process_subject_object_pairs(log, tokens):
     return subject.strip(), relation.strip(), result_object.strip()
 
 
-def reduce(arg_graph):
+def reduce(arg_graph, threshold):
+    edges = [edge for edge in arg_graph.edges(data=True) if edge['weight'] > 1]
+
     return arg_graph
 
 
@@ -119,7 +121,7 @@ if __name__ == '__main__':
 
     with open(encoding='ascii', file='./borcan_settings.json', mode='r', ) as settings_fp:
         settings = load_json(fp=settings_fp)
-    logger.info('settings: {}'.format(pformat(settings)))
+    logger.info('settings: {}'.format(pformat(settings, ), ), )
     host = settings['host']
     input_file = settings['text']
     input_encoding = settings['text_encoding']
@@ -151,6 +153,7 @@ if __name__ == '__main__':
     # todo: filter the graph and only show weight > 1
 
     graph = make_graph(triples)
+    reduced = reduce(arg_graph=graph, threshold=1, )
 
     show_graph(arg_graph=graph, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
