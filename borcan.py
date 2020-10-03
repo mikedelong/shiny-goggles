@@ -73,7 +73,7 @@ def process_subject_object_pairs(log, tokens):
 
 
 def reduce(arg_graph, threshold):
-    edges = [edge for edge in arg_graph.edges(data=True) if edge['weight'] > 1]
+    edges = [edge for edge in arg_graph.edges(data=True) if edge['weight'] > threshold]
 
     return arg_graph
 
