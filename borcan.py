@@ -155,8 +155,6 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
-    # todo: filter the graph and only show weight > 1
-
     graph = make_graph(triples)
     reduced = reduce(arg_graph=graph, threshold=1, )
 
