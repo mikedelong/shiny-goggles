@@ -158,11 +158,11 @@ if __name__ == '__main__':
     graph = make_graph(triples)
     do_reduced = True
     if do_reduced:
-        reduced = reduce(arg_graph=graph, threshold=1, )
-        show_graph(arg_graph=reduced, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
-                   graph_package=graph_technology, )
+        to_show = reduce(arg_graph=graph, threshold=1, )
     else:
-        show_graph(arg_graph=graph, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
-                   graph_package=graph_technology, )
+        to_show = graph
+
+    show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
+               graph_package=graph_technology, )
 
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
