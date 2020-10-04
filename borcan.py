@@ -156,8 +156,13 @@ if __name__ == '__main__':
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
     graph = make_graph(triples)
-    reduced = reduce(arg_graph=graph, threshold=1, )
+    do_reduced = True
+    if do_reduced:
+        reduced = reduce(arg_graph=graph, threshold=1, )
+        show_graph(arg_graph=reduced, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
+                   graph_package=graph_technology, )
+    else:
+        show_graph(arg_graph=graph, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
+                   graph_package=graph_technology, )
 
-    show_graph(arg_graph=reduced, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
-               graph_package=graph_technology, )
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
