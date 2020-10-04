@@ -80,7 +80,7 @@ def reduce(arg_graph, threshold):
         result.add_node(node_for_adding=edge[1])
         result.add_edge(u_of_edge=edge[0], v_of_edge=edge[1], weight=edge[2]['weight'])
 
-    return arg_graph
+    return result
 
 
 def show_graph(arg_graph, graph_package, cytoscape_layout, cytoscape_host, cytoscape_port, ):
