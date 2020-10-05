@@ -157,10 +157,7 @@ if __name__ == '__main__':
 
     graph = make_graph(triples)
     do_reduced = True
-    if do_reduced:
-        to_show = reduce(arg_graph=graph, threshold=1, )
-    else:
-        to_show = graph
+    to_show = graph if not do_reduced else reduce(arg_graph=graph, threshold=1, )
 
     show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
