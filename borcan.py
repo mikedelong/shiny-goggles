@@ -155,7 +155,7 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
-    do_reduced = True
+    do_reduced = False
     to_show = make_graph(triples) if not do_reduced else reduce(arg_graph=make_graph(triples), threshold=1, )
 
     show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
