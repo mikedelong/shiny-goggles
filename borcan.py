@@ -67,7 +67,6 @@ def process_subject_object_pairs(log, tokens):
             result_object = result_object + ' ' + token.text
             result_object = object_construction + ' ' + result_object
             object_construction = ''
-
     log.info('{}, {}, {}'.format(subject.strip(), relation.strip(), result_object.strip()))
     return subject.strip(), relation.strip(), result_object.strip()
 
@@ -79,7 +78,6 @@ def reduce(arg_graph, threshold):
         result.add_node(node_for_adding=edge[0])
         result.add_node(node_for_adding=edge[1])
         result.add_edge(u_of_edge=edge[0], v_of_edge=edge[1], weight=edge[2]['weight'])
-
     return result
 
 
