@@ -153,6 +153,7 @@ if __name__ == '__main__':
         logger.info(sentence)
         triples.append(process_subject_object_pairs(logger, model(sentence)))
 
+    triples = [triple for triple in triples if all([len(triple[index]) > 0 for index in range(3)])]
     do_reduced = False
     graph = make_graph(triples)
     to_show = graph if not do_reduced else reduce(arg_graph=graph, threshold=1, )
