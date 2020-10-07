@@ -25,6 +25,7 @@ from networkx import spring_layout
 from networkx.readwrite import cytoscape_data
 from spacy import load as load_spacy
 from spacy.lang.en import English
+from networkx.algorithms.components import connected_component_subgraphs
 
 
 def make_graph(arg):
@@ -157,6 +158,7 @@ if __name__ == '__main__':
     to_show = graph if not do_reduced else reduce(arg_graph=graph, threshold=1, )
 
     # todo only show the larger components
+    subgraphs = connected_component_subgraphs(G=graph)
 
     show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
