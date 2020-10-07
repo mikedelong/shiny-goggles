@@ -48,7 +48,7 @@ if __name__ == '__main__':
     logger.info(len(sentences))
     sentences = [item for item in sentences if item is not None]
     for sentence in sentences:
-        sentence = sentence.replace('—', ' - ').replace('–', ' - ').replace('"', ' ')
+        sentence = sentence.replace('—', ' - ').replace('–', ' - ').replace('"', ' ').replace('No.', '#')
         words = word_tokenize(sentence)
         length = len(words)
         original_length = length
