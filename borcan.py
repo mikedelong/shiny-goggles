@@ -158,7 +158,9 @@ if __name__ == '__main__':
     to_show = graph if not do_reduced else reduce(arg_graph=graph, threshold=1, )
 
     subgraphs = connected_component_subgraphs(G=graph)
+    list_of_subgraphs = sorted(list(subgraphs), key=len, reverse=True, )
 
+    lengths = [len(g) for g in list_of_subgraphs]
     # todo modify this to show an iterable of graphs
     show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
