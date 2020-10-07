@@ -157,9 +157,9 @@ if __name__ == '__main__':
     graph = make_graph(triples)
     to_show = graph if not do_reduced else reduce(arg_graph=graph, threshold=1, )
 
-    # todo only show the larger components
     subgraphs = connected_component_subgraphs(G=graph)
 
+    # todo modify this to show an iterable of graphs
     show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
 
