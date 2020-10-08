@@ -155,7 +155,6 @@ if __name__ == '__main__':
     triples = [triple for triple in triples if all([len(triple[index]) > 0 for index in range(3)])]
     do_reduced = False
     graph = make_graph(triples)
-    # to_show = graph if not do_reduced else reduce(arg_graph=graph, threshold=1, )
 
     subgraphs = connected_component_subgraphs(G=graph)
     list_of_subgraphs = sorted(list(subgraphs), key=len, reverse=True, )
