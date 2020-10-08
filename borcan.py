@@ -156,7 +156,7 @@ if __name__ == '__main__':
     do_reduced = False
     graph = make_graph(triples)
 
-    subgraphs = sorted(list(connected_component_subgraphs(G=graph)), key=len, reverse=True, )
+    subgraphs = list(connected_component_subgraphs(G=graph))
     to_show = Graph()
     for item in subgraphs:
         if len(item) > 3:
