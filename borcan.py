@@ -155,12 +155,18 @@ if __name__ == '__main__':
     triples = [triple for triple in triples if all([len(triple[index]) > 0 for index in range(3)])]
     do_reduced = False
     graph = make_graph(triples)
-    to_show = graph if not do_reduced else reduce(arg_graph=graph, threshold=1, )
+    # to_show = graph if not do_reduced else reduce(arg_graph=graph, threshold=1, )
 
     subgraphs = connected_component_subgraphs(G=graph)
     list_of_subgraphs = sorted(list(subgraphs), key=len, reverse=True, )
+    to_show = Graph()
+    for item in list_of_subgraphs:
+        if len(item) > 3:
+            for node in item.nodes():
+                to_show.add_node(node)
+            for edge in item.edges():
+                to_show.add_edge(u_of_edge=edge[0], v_of_edge=edge[1])
 
-    lengths = [len(g) for g in list_of_subgraphs]
     # todo modify this to show an iterable of graphs
     show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
