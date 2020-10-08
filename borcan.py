@@ -165,7 +165,6 @@ if __name__ == '__main__':
             for edge in item.edges():
                 to_show.add_edge(u_of_edge=edge[0], v_of_edge=edge[1])
 
-    # todo modify this to show an iterable of graphs
     show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
 
