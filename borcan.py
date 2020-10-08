@@ -156,9 +156,9 @@ if __name__ == '__main__':
     do_reduced = False
     graph = make_graph(triples)
 
-    list_of_subgraphs = sorted(list(connected_component_subgraphs(G=graph)), key=len, reverse=True, )
+    subgraphs = sorted(list(connected_component_subgraphs(G=graph)), key=len, reverse=True, )
     to_show = Graph()
-    for item in list_of_subgraphs:
+    for item in subgraphs:
         if len(item) > 3:
             for node in item.nodes():
                 to_show.add_node(node)
