@@ -159,9 +159,6 @@ if __name__ == '__main__':
     components = list(connected_component_subgraphs(G=graph))
     to_show = Graph()
     for item in [component for component in components if len(component) > 3]:
-        # todo remove this
-        for node in item.nodes():
-            to_show.add_node(node)
         for edge in item.edges():
             to_show.add_edge(u_of_edge=edge[0], v_of_edge=edge[1])
 
