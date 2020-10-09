@@ -156,14 +156,14 @@ if __name__ == '__main__':
     do_reduced = False
     graph = make_graph(triples)
 
-    subgraphs = list(connected_component_subgraphs(G=graph))
+    components = list(connected_component_subgraphs(G=graph))
     to_show = Graph()
-    for item in subgraphs:
-        if len(item) > 3:
-            for node in item.nodes():
-                to_show.add_node(node)
-            for edge in item.edges():
-                to_show.add_edge(u_of_edge=edge[0], v_of_edge=edge[1])
+    for item in [component for component in components if len(component) > 3]:
+        # todo remove this
+        for node in item.nodes():
+            to_show.add_node(node)
+        for edge in item.edges():
+            to_show.add_edge(u_of_edge=edge[0], v_of_edge=edge[1])
 
     show_graph(arg_graph=to_show, cytoscape_layout=layout, cytoscape_host=host, cytoscape_port=port,
                graph_package=graph_technology, )
