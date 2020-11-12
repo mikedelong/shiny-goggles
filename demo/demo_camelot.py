@@ -1,4 +1,5 @@
 import datetime
+from json import load
 from logging import FileHandler
 from logging import INFO
 from logging import StreamHandler
@@ -7,7 +8,7 @@ from logging import getLogger
 from pathlib import Path
 from sys import stdout
 from time import time
-from json import load
+
 from camelot import read_pdf
 
 if __name__ == '__main__':
