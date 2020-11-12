@@ -32,9 +32,8 @@ if __name__ == '__main__':
     tables = read_pdf(encoding='utf-8', input_path=input_file, java_options=None, output_format='dataframe',
                       pandas_options=None, multiple_tables=False, user_agent=None, )
 
-    logger.info(len(tables))
+    logger.info('table count: {}'.format(len(tables)))
     for index, table_df in enumerate(tables):
         logger.info('{} {}'.format(index, table_df))
-        logger.info('\n{}'.format(table_df))
 
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
