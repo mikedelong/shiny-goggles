@@ -8,6 +8,7 @@ from pathlib import Path
 from sys import stdout
 from time import time
 from json import load
+from camelot import read_pdf
 
 if __name__ == '__main__':
     time_start = time()
@@ -26,4 +27,13 @@ if __name__ == '__main__':
     with open(encoding='ascii', file='./settings.json', mode='r', ) as settings_fp:
         settings = load(fp=settings_fp, )
     logger.info(settings)
+    input_file = settings['input_file']
+
+    tables = read_pdf(filepath=input_file, flavor='lattice', pages='1-end', password=None, suppress_stdout=False, )
+    logger.info(len(tables))
+    for index, table in enumerate(tables):
+        logger.info('{} {}'.format(index, table.df.shape))
+        logger.info('\n{}'.format(table.df))
+        logger.info(table.parsing_report)
+
     logger.info('total time: {:5.2f}s'.format(time() - time_start))
